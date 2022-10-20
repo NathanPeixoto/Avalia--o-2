@@ -37,10 +37,10 @@ public class App {
         List<Produto> produtos = new ArrayList<Produto>();
         List<Venda> vendas = new ArrayList<Venda>();
         
-        produtos.add(new Produto("Carne", "5432", 250, 5421));
+        /*produtos.add(new Produto("Carne", "5432", 250, 5421));
         produtos.add(new Produto("Celular", "8512", 3500, 5002));
         produtos.add(new Produto("CPUS", "520", 1500, 60));
-        produtos.add(new Produto("Mouse", "95", 600, 300));
+        produtos.add(new Produto("Mouse", "95", 600, 300));*/
         
         Scanner in = new Scanner(System.in);
 
@@ -61,6 +61,7 @@ public class App {
                 
                 System.out.println("\nDigíte o nome do produto:");
                 nome = in.nextLine();
+                nome.toLowerCase();
 
                 System.out.println("\nDigíte o código do produto:");
                 codigo = in.nextLine();
@@ -90,47 +91,51 @@ public class App {
 
             } else if (opcao == 2) {
 
-                System.out.println("\nDigíte a forma da busca\n1.Busca por id\n2.Busca por nome");
-                formaDeBusca = in.nextInt();
-                toggler = false;
-                
-                if(formaDeBusca == 1){
-
-                    System.out.println("\nDigíte o código do produto:");
-                    produto_a_buscar = in.next();
-
-                    for(Produto p : produtos){
-                        if(p.getCodigo().equals(produto_a_buscar)){
-
-                            System.out.println("\nProduto localizado com sucesso!\n");
-                            System.out.printf("Nome do produto: %s - Codigo do produto: %s - Valor do produto: R$%s - Quantidade no estoque: %s\n", p.getNome(),p.getCodigo(),p.getValor(),p.getQuantidadeEmEstoque());
-                            toggler = true;
-
-                        }
-                    }
-                }else if(formaDeBusca == 2){
-
-                    System.out.println("\nDigíte o nome do produto:");
-                    produto_a_buscar = in.next();
-
-                    for(Produto p : produtos){
-                        if(p.getNome().equals(produto_a_buscar)){
-
-                            System.out.println("\nProduto localizado com sucesso!\n");
-                            System.out.printf("Nome do produto: %s - Codigo do produto: %s - Valor do produto: %s - Quantidade no estoque: %s\n", p.getNome(),p.getCodigo(),p.getValor(),p.getQuantidadeEmEstoque());
-                            toggler = true;
-                        }
-                    }
-
+                if(produtos.isEmpty()){
+                    System.out.println("Nenhum produto foi cadastrado ainda!");
                 }else{
-                    System.out.println("Error!");
-                }
-
-                if(toggler == true){
+                    System.out.println("\nDigíte a forma da busca\n1.Busca por id\n2.Busca por nome");
+                    formaDeBusca = in.nextInt();
                     toggler = false;
-                }else{
-                    System.out.println("\nProduto não identificado!");
-                }
+                    
+                    if(formaDeBusca == 1){
+
+                        System.out.println("\nDigíte o código do produto:");
+                        produto_a_buscar = in.next();
+
+                        for(Produto p : produtos){
+                            if(p.getCodigo().equals(produto_a_buscar)){
+
+                                System.out.println("\nProduto localizado com sucesso!\n");
+                                System.out.printf("Nome do produto: %s - Codigo do produto: %s - Valor do produto: R$%s - Quantidade no estoque: %s\n", p.getNome(),p.getCodigo(),p.getValor(),p.getQuantidadeEmEstoque());
+                                toggler = true;
+
+                            }
+                        }
+                    }else if(formaDeBusca == 2){
+
+                        System.out.println("\nDigíte o nome do produto:");
+                        produto_a_buscar = in.next();
+                        produto_a_buscar.toLowerCase();
+
+                        for(Produto p : produtos){
+                            if(p.getNome().equals(produto_a_buscar)){
+
+                                System.out.println("\nProduto localizado com sucesso!\n");
+                                System.out.printf("Nome do produto: %s - Codigo do produto: %s - Valor do produto: %s - Quantidade no estoque: %s\n", p.getNome(),p.getCodigo(),p.getValor(),p.getQuantidadeEmEstoque());
+                                toggler = true;
+                            }
+                        }
+
+                    }else{
+                        System.out.println("Error!");
+                    }
+
+                    if(toggler == true){
+                        toggler = false;
+                    }else{
+                        System.out.println("\nProduto não identificado!");
+                }}
 
                 in.nextLine();
                 voltarMenu(in);
@@ -138,24 +143,29 @@ public class App {
 
             } else if (opcao == 3) {
 
-                System.out.println("\nQual forma de ordenação deseja?\n1.Por nome\n2.Por Código\n3.Por valor");
-                formaDeBusca = in.nextInt();
-
-                System.out.printf("\n---Produtos no estoque---\n-Tipos de produtos: %s- \n\n", produtos.size());//
-                
-                if(formaDeBusca ==1){
-                    produtos.sort(new OrdenadorPorNome());
-                    
-                }else if(formaDeBusca == 2){
-                    produtos.sort(new OrdenadorPorCodigo());
-
-                }else if(formaDeBusca == 3){
-                    produtos.sort(new OrdenadorPorPreco());
-
+                if(produtos.isEmpty())
+                {
+                    System.out.println("Nenhum produto foi cadastrado ainda!");
                 }else{
-                    System.out.println("Error!");
-                    toggler = true;
-                }
+                    System.out.println("\nQual forma de ordenação deseja?\n1.Por nome\n2.Por Código\n3.Por valor");
+                    formaDeBusca = in.nextInt();
+
+                    System.out.printf("\n---Produtos no estoque---\n-Tipos de produtos: %s- \n\n", produtos.size());//
+                    
+                    if(formaDeBusca ==1){
+                        produtos.sort(new OrdenadorPorNome());
+                        
+                    }else if(formaDeBusca == 2){
+                        produtos.sort(new OrdenadorPorCodigo());
+
+                    }else if(formaDeBusca == 3){
+                        produtos.sort(new OrdenadorPorPreco());
+
+                    }else{
+                        System.out.println("Error!");
+                        toggler = true;
+                    }
+                
                 
                 if(toggler == false){
                     for(Produto p: produtos){
@@ -166,17 +176,18 @@ public class App {
                     Double medio = produtos.stream().collect(Collectors.averagingDouble(Produto::getValor));
                     OptionalDouble minimo = produtos.stream().mapToDouble(Produto::getValor).min();
                     OptionalDouble maximo = produtos.stream().mapToDouble(Produto::getValor).max();
+                    
                     System.out.printf("\nValor Médio: %s - Valor Maxímo: %s - Valor Minímo: %s\n", medio, maximo.getAsDouble(), minimo.getAsDouble());
                 }else{
                     toggler = false;
-                }
+                }}
 
                 in.nextLine();
                 voltarMenu(in);
             
             } else if (opcao == 4) {
 
-                if(vendas.size() == 0){
+                if(vendas.isEmpty()){
                     System.out.println("Nenhum produto foi vendido ainda!");
                     in.nextLine();
                 }else{
@@ -194,6 +205,10 @@ public class App {
 
             } else if (opcao == 5) {
                 
+                if(produtos.isEmpty()){
+                    System.out.println("Nenhum produto foi cadastrado ainda!");
+                }else{
+
                 System.out.println("\nDigíte a forma de compra:\n1.Por código(ID)\n2.Por nome");
                 formaDeBusca = in.nextInt();
 
@@ -209,7 +224,7 @@ public class App {
                             res = p;}}
 
                 }else if(formaDeBusca ==2){
-
+                    
                     System.out.println("Digíte o nome do produto:");
                     nome = in.next();
 
@@ -271,7 +286,7 @@ public class App {
 
                 }else{
                     toggler = false;
-                }
+                }}
 
                 voltarMenu(in);
             }else if (opcao != 0) {
